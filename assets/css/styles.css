@@ -1,4 +1,70 @@
 /*Add your custom styles here*/
+
+body {
+    background-color: rgba(255, 246, 147, 0.35);
+}
+
 .starting-title {
     text-align: center;
+}
+
+.table, th, td {
+    border: 1px solid darkgrey;
+    border-collapse: collapse;
+}
+
+.table {
+    margin: 0 auto;
+}
+
+th, td {
+    padding: 10px;
+}
+
+tr:nth-child(odd) {
+    background-color: #D6EEEE;
+}
+
+tr:nth-child(even) {
+    background-color: white;
+}
+
+th {
+    background-color: #03036a;
+    color: white;
+}
+
+.removeBtn {
+    font-size: 24px;
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.removeBtn:hover {
+    background-color: aliceblue;
+}
+
+.userForm {
+    padding: 50px 0;
+    text-align: center;
+}
+
+.userForm label {
+    font-size: large;
+}
+
+.userForm input {
+    font-size: medium;
+    padding: 5px;
+    border-radius: 6px;
+}
+
+.submitBtn {
+    background-color:lightgreen;
+    cursor: pointer;
+}
+
+.submitBtn:hover {
+    background-color: darkseagreen;
 }

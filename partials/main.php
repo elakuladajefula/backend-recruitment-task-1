@@ -67,19 +67,51 @@
         </script>
     <?php }
 
-    echo "<br><form class='userForm' action='/action_page.php'>
+    echo "<form class='userForm' method='post' action='" . $_SERVER['PHP_SELF'] . "'>
         <label>Name:</label><br>
-        <input type='text' id='name' name='name'><br><br>
+        <input type='text' name='name'><br><br>
         <label>Username:</label><br>
-        <input type='text' id='username' name='username'><br><br>
+        <input type='text' name='username'><br><br>
         <label>Email:</label><br>
-        <input type='text' id='email' name='email'><br><br>
-        <label>Address:</label><br>
-        <input type='text' id='address' name='address'><br><br>
+        <input type='text' name='email'><br><br>
+        <label>Street:</label><br>
+        <input type='text' name='street'><br><br>
+        <label>Zipcode:</label><br>
+        <input type='text' name='zipcode'><br><br>
+        <label>City:</label><br>
+        <input type='text' name='city'><br><br>
         <label>Phone:</label><br>
-        <input type='text' id='phone' name='phone'><br><br>
+        <input type='text' name='phone'><br><br>
         <label>Company:</label><br>
-        <input type='text' id='company' name='company'><br><br>
-        <input class='submitBtn' type='submit' value='Submit'>
-    </form> "
+        <input type='text' name='company'><br><br>
+        <button class='submitBtn' type='submit'>Submit</button>
+    </form>";
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["name"])) {
+        $rows = count($ids);
+        $lastId = str_replace("button", "", $ids[$rows - 1]);
+        $newId = $lastId + 1;
+        $jsonObject = new stdClass();
+        $jsonObject->id = $newId;
+        $jsonObject->name = $_POST["name"];
+        $jsonObject->username = $_POST["username"];
+        $jsonObject->email = $_POST["email"];
+        $jsonObject->address = new stdClass();
+        $jsonObject->address->street = $_POST["street"];
+        $jsonObject->address->zipcode = $_POST["zipcode"];
+        $jsonObject->address->city = $_POST["city"];
+        $jsonObject->phone = $_POST["phone"];
+        $jsonObject->company = new stdClass();
+        $jsonObject->company->name = $_POST["company"];
+        array_push($data, $jsonObject);
+        $jsonData = json_encode($data);
+        echo $jsonData;
+        file_put_contents('./dataset/users.json', $jsonData);
+        ?><script type="text/javascript">    
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+        </script><?php 
+        echo("<meta http-equiv='refresh' content='1'>");
+    }
 ?>

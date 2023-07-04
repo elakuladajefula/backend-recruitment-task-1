@@ -63,8 +63,11 @@ th {
 .submitBtn {
     background-color:lightgreen;
     cursor: pointer;
+    font-size: medium;
+    padding: 5px;
+    border-radius: 6px;
 }
 
 .submitBtn:hover {
-    background-color: darkseagreen;
+    background-color: mediumaquamarine;
 }

@@ -71,3 +71,8 @@ th {
 .submitBtn:hover {
     background-color: mediumaquamarine;
 }
+
+.error {
+    padding-left: 5px;
+    color: red;
+}

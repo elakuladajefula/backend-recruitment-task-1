@@ -69,21 +69,21 @@
 
     echo "<form class='userForm' method='post' action='" . $_SERVER['PHP_SELF'] . "'>
         <label>Name:</label><br>
-        <input type='text' name='name'><br><br>
+        <input class='name' type='text' name='name'><span class='error'>*</span><br><br>
         <label>Username:</label><br>
-        <input type='text' name='username'><br><br>
+        <input class='username' type='text' name='username'><span class='error'>*</span><br><br>
         <label>Email:</label><br>
-        <input type='text' name='email'><br><br>
+        <input class='email' type='text' name='email'><span class='error'>*</span><br><br>
         <label>Street:</label><br>
-        <input type='text' name='street'><br><br>
+        <input class='street' type='text' name='street'><span class='error'>*</span><br><br>
         <label>Zipcode:</label><br>
-        <input type='text' name='zipcode'><br><br>
+        <input class='zipcode' type='text' name='zipcode'><span class='error'>*</span><br><br>
         <label>City:</label><br>
-        <input type='text' name='city'><br><br>
+        <input class='city' type='text' name='city'><span class='error'>*</span><br><br>
         <label>Phone:</label><br>
-        <input type='text' name='phone'><br><br>
+        <input class='phone' type='text' name='phone'><span class='error'>*</span><br><br>
         <label>Company:</label><br>
-        <input type='text' name='company'><br><br>
+        <input class='company' type='text' name='company'><span class='error'>*</span><br><br>
         <button class='submitBtn' type='submit'>Submit</button>
     </form>";
 
@@ -93,25 +93,52 @@
         $newId = $lastId + 1;
         $jsonObject = new stdClass();
         $jsonObject->id = $newId;
-        $jsonObject->name = $_POST["name"];
-        $jsonObject->username = $_POST["username"];
-        $jsonObject->email = $_POST["email"];
+        if (!(empty($_POST["name"])) && preg_match("/^[a-zA-Z-' ]*$/", $_POST["name"])) {
+            $jsonObject->name = test_input($_POST["name"]);
+        }
+        if (!(empty($_POST["username"]))) {
+            $jsonObject->username = test_input($_POST["username"]);
+        }
+        if (!(empty($_POST["email"])) && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+            $jsonObject->email = test_input($_POST["email"]);
+        }
         $jsonObject->address = new stdClass();
-        $jsonObject->address->street = $_POST["street"];
-        $jsonObject->address->zipcode = $_POST["zipcode"];
-        $jsonObject->address->city = $_POST["city"];
-        $jsonObject->phone = $_POST["phone"];
-        $jsonObject->company = new stdClass();
-        $jsonObject->company->name = $_POST["company"];
-        array_push($data, $jsonObject);
-        $jsonData = json_encode($data);
-        echo $jsonData;
-        file_put_contents('./dataset/users.json', $jsonData);
-        ?><script type="text/javascript">    
-            if (window.history.replaceState) {
-                window.history.replaceState(null, null, window.location.href);
-            }
-        </script><?php 
-        echo("<meta http-equiv='refresh' content='1'>");
+        if (!(empty($_POST["street"]))) {
+            $jsonObject->address->street = test_input($_POST["street"]);
+        }
+        if (!(empty($_POST["zipcode"]))) {
+            $jsonObject->address->zipcode = test_input($_POST["zipcode"]);
+        }
+        if (!(empty($_POST["city"]))) {
+            $jsonObject->address->city = test_input($_POST["city"]);
+        }
+        if (!(empty($_POST["phone"]))) {
+            $jsonObject->phone = test_input($_POST["phone"]);
+        }
+        if (!(empty($_POST["company"]))) {
+            $jsonObject->company = new stdClass();
+            $jsonObject->company->name = test_input($_POST["company"]);
+        }
+        if (!(empty($jsonObject->name)) && !(empty($jsonObject->username)) && !(empty($jsonObject->email)) 
+        && !(empty($jsonObject->address->street)) && !(empty($jsonObject->address->zipcode)) 
+        && !(empty($jsonObject->address->city)) && !(empty($jsonObject->phone)) && !(empty($jsonObject->company->name))) {
+            array_push($data, $jsonObject);
+            $jsonData = json_encode($data);
+            echo $jsonData;
+            file_put_contents('./dataset/users.json', $jsonData);
+            ?><script type="text/javascript">    
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
+            </script><?php 
+            echo("<meta http-equiv='refresh' content='1'>");
+        }
     }
+
+    function test_input($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlentities($data, ENT_QUOTES);
+        return $data;
+      }
 ?>

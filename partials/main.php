@@ -8,7 +8,7 @@
 
     $file = file_get_contents('./dataset/users.json');
     $data = json_decode($file);
-    echo "<table class='table'>
+    echo "<div class='tblCont'><table class='table'>
         <tr>
             <th>Name</th>
             <th>Username</th>
@@ -35,7 +35,7 @@
             </td>" .
         "</tr>";
     }
-    echo "</table>";
+    echo "</table></div>";
 
     foreach ($ids as $id) {
         if(array_key_exists($id, $_POST)) {
